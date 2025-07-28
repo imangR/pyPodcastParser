@@ -2,7 +2,6 @@
 from bs4 import BeautifulSoup
 from datetime import datetime
 import email.utils
-from time import mktime
 
 from pyPodcastParser.Item import Item
 
@@ -69,7 +68,6 @@ class Podcast():
     """
 
     def __init__(self, feed_content):
-        #super(Podcast, self).__init__()
         self.feed_content = feed_content
         self.set_soup()
         self.set_full_soup()
@@ -198,7 +196,7 @@ class Podcast():
 
     def set_soup(self):
         """Sets soup and strips items"""
-        self.soup = BeautifulSoup(self.feed_content, "html.parser")
+        self.soup = BeautifulSoup(self.feed_content, "xml")
         for item in self.soup.findAll('item'):
             item.decompose()
         for image in self.soup.findAll('image'):
@@ -206,7 +204,7 @@ class Podcast():
 
     def set_full_soup(self):
         """Sets soup and keeps items"""
-        self.full_soup = BeautifulSoup(self.feed_content, "html.parser")
+        self.full_soup = BeautifulSoup(self.feed_content, "xml")
 
     def set_items(self):
         self.items = []
@@ -446,3 +444,6 @@ class Podcast():
             self.web_master = self.soup.find('webmaster').string
         except AttributeError:
             self.web_master = None
+    
+    def get_items(self) -> list[Item]:
+        return self.items
