@@ -1,6 +1,5 @@
 from datetime import datetime
 import email.utils
-from time import mktime
 
 class Item(object):
     """Parses an xml rss feed
@@ -39,8 +38,6 @@ class Item(object):
     """
 
     def __init__(self, soup):
-        #super(Item, self).__init__()
-
         self.soup = soup
         self.set_rss_element()
         self.set_itunes_element()
@@ -269,3 +266,6 @@ class Item(object):
             self.itunes_summary = self.soup.find('itunes:summary').string
         except AttributeError:
             self.itunes_summary = None
+    
+    def get_enclose_url(self) -> str | None:
+        return self.enclosure_url
